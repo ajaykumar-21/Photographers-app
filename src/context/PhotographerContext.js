@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
+import data from "../data/photographers.json";
 
 const PhotographerContext = createContext();
 
@@ -26,23 +27,29 @@ export const PhotographerProvider = ({ children }) => {
   const [paginationPage, setPaginationPage] = useState(1);
   const itemsPerPage = 6;
 
+//   console.log(data.photographers);
+
   // Fetch data from JSON server
   useEffect(() => {
-    const fetchPhotographers = async () => {
-      try {
-        const res = await fetch("http://localhost:3001/photographers");
-        const data = await res.json();
-        // console.log(data);
-        setPhotographers(data);
-        setFilteredPhotographers(data);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+    // const fetchPhotographers = async () => {
+    //   try {
+    //     const res = await fetch("http://localhost:3001/photographers");
+    //     const data = await res.json();
+    //     // console.log(data);
+    //     setPhotographers(data);
+    //     setFilteredPhotographers(data);
+    //   } catch (err) {
+    //     console.error("Error fetching data:", err);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
 
-    fetchPhotographers();
+    // fetchPhotographers();
+
+    setPhotographers(data.photographers);
+    setFilteredPhotographers(data.photographers);
+    setLoading(false);
   }, []);
 
   // Apply search, filters, sort

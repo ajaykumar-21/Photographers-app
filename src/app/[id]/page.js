@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
+import data from "../../data/photographers.json";
 
 export default function PhotographerProfilePage() {
   const { id } = useParams();
@@ -11,26 +12,44 @@ export default function PhotographerProfilePage() {
   const [loading, setLoading] = useState(true);
   const [showInquiry, setShowInquiry] = useState(false);
 
+  //   useEffect(() => {
+  //     const fetchPhotographer = async () => {
+  //       try {
+  //         const res = await fetch(
+  //           `http://localhost:3001/photographers/${parseInt(id)}`
+  //         );
+  //         // console.log(res);
+  //         if (!res.ok) throw new Error("Photographer not found");
+  //         const data = await res.json();
+  //         setPhotographer(data);
+  //         setLoading(false);
+  //       } catch (err) {
+  //         console.error("Failed to load photographer:", err);
+  //         setLoading(false);
+  //       }
+  //     };
+
+  //     if (id) {
+  //       fetchPhotographer();
+  //     }
+  //   }, [id]);
+
   useEffect(() => {
+    // Function to simulate fetching a single photographer by ID
     const fetchPhotographer = async () => {
-      try {
-        const res = await fetch(
-          `http://localhost:3001/photographers/${parseInt(id)}`
-        );
-        // console.log(res);
-        if (!res.ok) throw new Error("Photographer not found");
-        const data = await res.json();
-        setPhotographer(data);
-        setLoading(false);
-      } catch (err) {
-        console.error("Failed to load photographer:", err);
-        setLoading(false);
+      // Find the photographer whose ID matches the dynamic route param
+      const found = data.photographers.find((p) => p.id === parseInt(id));
+      if (found) {
+        // Set the found photographer in state
+        setPhotographer(found);
+      } else {
+        // If no match, set to null (used to show "not found" UI)
+        setPhotographer(null);
       }
+      setLoading(false);
     };
 
-    if (id) {
-      fetchPhotographer();
-    }
+    if (id) fetchPhotographer(); // Only run fetch if ID param is available
   }, [id]);
 
   if (loading) return <div className="p-8">Loading profile...</div>;
