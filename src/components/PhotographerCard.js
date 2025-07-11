@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const PhotographerCard = ({ photographer }) => {
   const { id, name, location, price, rating, tags, profilePic } = photographer;
-  console.log(profilePic);
+//   console.log(profilePic);
 
   return (
     <div className="bg-white shadow rounded-lg overflow-hidden hover:shadow-md transition">
