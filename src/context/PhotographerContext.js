@@ -23,6 +23,8 @@ export const PhotographerProvider = ({ children }) => {
   });
 
   const [sort, setSort] = useState("recent");
+  const [paginationPage, setPaginationPage] = useState(1);
+  const itemsPerPage = 6;
 
   // Fetch data from JSON server
   useEffect(() => {
@@ -30,7 +32,7 @@ export const PhotographerProvider = ({ children }) => {
       try {
         const res = await fetch("http://localhost:3001/photographers");
         const data = await res.json();
-        console.log(data);
+        // console.log(data);
         setPhotographers(data);
         setFilteredPhotographers(data);
       } catch (err) {
@@ -89,8 +91,11 @@ export const PhotographerProvider = ({ children }) => {
       updated.sort((a, b) => b.id - a.id); // assume higher ID = more recent
     }
 
-    setFilteredPhotographers(updated);
-  }, [photographers, search, filters, sort]);
+    // Apply pagination (load more)
+    const startIndex = 0;
+    const endIndex = paginationPage * itemsPerPage;
+    setFilteredPhotographers(updated.slice(startIndex, endIndex));
+  }, [photographers, search, filters, sort, paginationPage]);
 
   return (
     <PhotographerContext.Provider
@@ -104,6 +109,8 @@ export const PhotographerProvider = ({ children }) => {
         setSearch,
         setFilters,
         setSort,
+        paginationPage,
+        setPaginationPage,
       }}
     >
       {children}
